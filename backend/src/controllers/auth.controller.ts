@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import prisma from "../prisma/prismaClient";
 import { signupSchema, loginSchema } from "../validators/auth.validator";
 import config from "../config/config";
+import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 
 export const signup = async (req: Request, res: Response) => {
     try {
