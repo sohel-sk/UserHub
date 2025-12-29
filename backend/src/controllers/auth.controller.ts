@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../prisma/prismaClient";
-import { signupSchema } from "../validators/auth.validator";
+import { signupSchema, loginSchema } from "../validators/auth.validator";
 import config from "../config/config";
 
 export const signup = async (req: Request, res: Response) => {
@@ -59,7 +59,7 @@ export const signup = async (req: Request, res: Response) => {
                 email: req.body.email
             }
         });
-        
+
         if (error.name === "ZodError") {
         return res.status(400).json({
             message: error.message,
@@ -72,3 +72,92 @@ export const signup = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const login = async (req: Request, res: Response) => { 
+    try {
+        // validation input
+        const validatedData = loginSchema.parse(req.body);
+        const { email, password } = validatedData;
+
+        // check user exists or not 
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        // no user found (resource not found code returned)
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+    
+        // check for activity status
+        if (user.status !== "ACTIVE") {
+            return res.status(403).json({
+                message: "Account is deactivated. Contact admin.",
+            });
+        }
+
+        // password hash compare
+        const passwordCheck = await bcrypt.compare(password, user.password);
+
+        // wrong password return (unauthorized status code returned )
+        if (!passwordCheck) { 
+            return res.status(401).json({
+                message: "Invalid Credentials",
+            });
+        }
+
+        // create jwt token 
+        const token = jwt.sign({
+            userId: user.id, role: user.role
+        },
+            config.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        // set cookie values
+        res.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 3600000,
+            secure: config.nodeEnv === 'production',
+            sameSite: 'strict'
+        })
+
+        // update last login time before sending 200 status response
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { lastLogin: new Date() }
+        });
+
+        // return response with 200 OK status
+        return res.status(200).json({
+            message: "Login Successfull",
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            },
+        });
+        
+    } catch (error: any) {
+        if (error.name === "ZodError") { 
+            return res.status(400).json({
+                message: "Validation Error - ",
+                errors: error.errors,
+            });
+        }
+
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+        
+    }
+}
