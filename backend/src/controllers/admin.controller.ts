@@ -63,6 +63,12 @@ export const activateUser = async (req: AuthenticatedRequest, res: Response) => 
 export const deactivateUser = async (req: AuthenticatedRequest, res: Response) => { 
     const { userId } = req.params;
 
+    if (userId === req.user?.id) { 
+        return res.status(400).json({
+            message: "Admin cannot deactivate their own account.",
+        });
+    }
+
     const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: { status: "INACTIVE" },
