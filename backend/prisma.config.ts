@@ -3,7 +3,7 @@
 import config = require("./src/config/config");
 const { defineConfig } = require("prisma/config");
 export = defineConfig({
-  schema: "prisma/schema",
+  schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
