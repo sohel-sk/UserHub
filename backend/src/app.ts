@@ -1,13 +1,13 @@
-import express = require("express");
-import cors = require("cors");
-import prisma = require("./prisma/prismaClient");
-
+import express from "express";
+import cors from 'cors';
+import prisma from "./prisma/prismaClient";
+import authRoutes from "./routes/auth.routes";
+import cookieParser from "cookie-parser";
 const app = express();
-app.use(cors())
-
-app.get("/test-db", async (_, res) => {
-    const users = await prisma.user.findMany();
-    res.json(users);
-});
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(cookieParser());
+app.use(cors());
+app.use("/auth", authRoutes)
 
 export = app;

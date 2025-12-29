@@ -1,8 +1,8 @@
-import app = require("./app");
-import config = require("./config/config");
+import app from "./app"
+import config from "./config/config"
 
 app.listen(config.PORT, () => { 
     console.log(`Server is running on port ${config.PORT} in ${config.nodeEnv} mode.`);
 });
 
-export = app;
+export default app;
