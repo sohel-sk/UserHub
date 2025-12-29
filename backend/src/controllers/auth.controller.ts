@@ -161,3 +161,28 @@ export const login = async (req: Request, res: Response) => {
         
     }
 }
+
+export const getme = async (req: AuthenticatedRequest, res: Response) => { 
+    try {
+        const user = prisma.user.findUnique({
+            where: {
+                id: req.user?.id
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                status: true,
+                createdAt: true,
+            }
+        });
+        return res.status(200).json(user);
+    } catch (error: any) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            errors:error.errors,
+        })
+    }
+}

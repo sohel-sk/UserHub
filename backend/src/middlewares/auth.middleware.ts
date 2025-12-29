@@ -65,3 +65,4 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
         
     }
 }
+
