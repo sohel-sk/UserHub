@@ -27,10 +27,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchUser = async () => {
         try {
-            const response = await api.get("/auth/me");
+            const response = await api.get("/auth/me", {
+                headers: {
+                    "Cache-Control": "no-cache",
+                },
+            });
             setUser(response.data.user);
-        } catch {
-            setUser(null);
+
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                setUser(null); // ONLY if truly unauthorized
+            }
         } finally {
             setLoading(false);
         }
@@ -58,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{ user, loading, logout, login, signup }}>
-            {children}
+            {loading ? null : children}
         </AuthContext.Provider>
     );
 
