@@ -4,16 +4,15 @@ import authRoutes from "./routes/auth.routes";
 import adminRoutes from "./routes/admin.routes";
 import userRoutes from "./routes/user.routes";
 import cookieParser from "cookie-parser";
+import config from "./config/config";
 const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
 app.use(
     cors({
-        origin: "http://localhost:5174",
+        origin: config.FRONTEND_URL,
         credentials: true,
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
 

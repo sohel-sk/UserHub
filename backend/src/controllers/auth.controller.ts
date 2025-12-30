@@ -122,11 +122,8 @@ export const login = async (req: Request, res: Response) => {
 
         // set cookie values
         res.cookie('token', token, {
-            httpOnly: true,
-            maxAge: 3600000,
-            secure: false,
-            sameSite: 'lax',
-            path: '/'
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         })
 
         // update last login time before sending 200 status response
