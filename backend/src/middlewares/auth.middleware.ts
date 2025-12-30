@@ -18,16 +18,11 @@ export interface AuthenticatedRequest extends Request {
 export const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => { 
 
     try {
-        const authHeader = req.headers.authorization;
+        const token = req.cookies?.token;
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) { 
-            return res.status(401).json({
-                message: "Authentication required"
-            });
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized" });
         }
-
-        const token = authHeader.split(" ")[1];
-
         const decoded = jwt.verify(
             token as string,
             config.JWT_SECRET
@@ -65,4 +60,9 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
         
     }
 }
+
+export const noCache = (req:AuthenticatedRequest, res:Response, next:NextFunction) => {
+    res.set("Cache-Control", "no-store");
+    next();
+};
 

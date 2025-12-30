@@ -124,7 +124,8 @@ export const login = async (req: Request, res: Response) => {
             httpOnly: true,
             maxAge: 3600000,
             secure: false,
-            sameSite: 'lax'
+            sameSite: 'lax',
+            path: '/'
         })
 
         // update last login time before sending 200 status response
@@ -169,7 +170,7 @@ export const getme = async (req: AuthenticatedRequest, res: Response) => {
         if(userId === undefined) {
             return res.status(400).json({ message: "User ID is required" });
         }
-        const user = prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: {
                 id: userId,
             },
@@ -182,6 +183,11 @@ export const getme = async (req: AuthenticatedRequest, res: Response) => {
                 createdAt: true,
             }
         });
+
+        res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
+        res.setHeader("Surrogate-Control", "no-store");
         return res.status(200).json(user);
     } catch (error: any) {
         console.log(error);
