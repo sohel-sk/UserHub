@@ -5,6 +5,7 @@ import prisma from "../prisma/prismaClient";
 import { signupSchema, loginSchema } from "../validators/auth.validator";
 import config from "../config/config";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware";
+import { create } from "node:domain";
 
 export const signup = async (req: Request, res: Response) => {
     try {
@@ -142,7 +143,10 @@ export const login = async (req: Request, res: Response) => {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                status: user.status,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
             },
         });
         

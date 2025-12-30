@@ -22,6 +22,9 @@ export default function ProfilePage() {
     const [loadingPassword, setLoadingPassword] = useState(false)
 
 
+    
+
+
     const handleUpdateProfile = async (e: React.FormEvent) => { 
         e.preventDefault();
         setLoadingProfile(true);
@@ -44,12 +47,30 @@ export default function ProfilePage() {
         }
 
     }
+    const passwordRequirements = [
+        { label: "At least 8 characters", met: newPassword.length >= 8 },
+        { label: "Contains uppercase letter", met: /[A-Z]/.test(newPassword) },
+        { label: "Contains lowercase letter", met: /[a-z]/.test(newPassword) },
+        { label: "Contains number", met: /[0-9]/.test(newPassword) },
+    ]
+
+    const allRequirementsMet = passwordRequirements.every((req) => req.met)
+
+
 
     const handleChangePassword = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoadingPassword(true);
 
         try {
+            if (!allRequirementsMet) { 
+                toast({
+                    title: "Weak password",
+                    description: "Please meet all password requirements",
+                    variant: "destructive",
+                })
+                return;
+            }
             await api.patch("/user/profile/change-password", { currentPassword, newPassword });
             setCurrentPassword("");
             setNewPassword("");

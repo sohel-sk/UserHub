@@ -81,7 +81,7 @@ export function Navbar() {
               <DropdownMenuItem asChild>
                 <Link to="/profile" className="cursor-pointer">
                   <User className="mr-2 h-4 w-4" />
-                  Profile
+                  Update Profile
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />

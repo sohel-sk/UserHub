@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from "../hooks/use-toast"
 import { Mail, Lock, LogIn, Eye, EyeOff, Shield } from "lucide-react"
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -27,12 +28,22 @@ export default function LoginPage() {
             await login(email, password);
             toast({ title: "Welcome back!", description: "You have successfully logged in." })
             navigate("/dashboard")
-        } catch (error) {
+        } catch (error: unknown) {
+            let message = "Invalid credentials";
+
+            if (axios.isAxiosError(error)) {
+            message =
+                error.response?.data?.message || // 👈 BACKEND MESSAGE
+                error.message;
+            }
+
             toast({
                 title: "Login failed",
-                description: error instanceof Error ? error.message : "Invalid credentials",
+                description: message,
                 variant: "destructive",
-            })
+            });
+        } finally { 
+            setLoading(false);
         }
     }
 
