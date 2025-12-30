@@ -62,7 +62,6 @@ export const signup = async (req: Request, res: Response) => {
         });
 
         if (error.name === "ZodError") {
-            console.log(req.body.email);
         return res.status(400).json({
             message: error.message,
             
