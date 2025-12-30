@@ -164,9 +164,14 @@ export const login = async (req: Request, res: Response) => {
 
 export const getme = async (req: AuthenticatedRequest, res: Response) => { 
     try {
+
+        const userId = req.user?.id;
+        if(userId === undefined) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
         const user = prisma.user.findUnique({
             where: {
-                id: req.user?.id
+                id: userId,
             },
             select: {
                 id: true,

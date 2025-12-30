@@ -47,6 +47,12 @@ export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
 export const activateUser = async (req: AuthenticatedRequest, res: Response) => {
     const { userId } = req.params;
 
+    if (!userId) { 
+        return res.status(400).json({
+            message: "User ID is required",
+        });
+    }
+
     const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: { status: "ACTIVE" },
@@ -62,6 +68,12 @@ export const activateUser = async (req: AuthenticatedRequest, res: Response) => 
 // PATCH /admin/user/:id/deactivate
 export const deactivateUser = async (req: AuthenticatedRequest, res: Response) => { 
     const { userId } = req.params;
+
+    if (!userId) { 
+        return res.status(400).json({
+            message: "User ID is required",
+        });
+    }
 
     if (userId === req.user?.id) { 
         return res.status(400).json({

@@ -8,7 +8,15 @@ const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:5174",
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
+
 
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
