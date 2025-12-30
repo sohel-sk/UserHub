@@ -1,1 +1,135 @@
-@import "tailwindcss"; 
+@import "tailwindcss";
+
+@layer base {
+    :root {
+        /* Colors */
+        --background: 180 30% 98%;
+        --foreground: 180 50% 10%;
+
+        --card: 180 30% 99%;
+        --card-foreground: 180 50% 10%;
+
+        --primary: 175 70% 40%;
+        --primary-foreground: 0 0% 100%;
+
+        --secondary: 180 20% 94%;
+        --secondary-foreground: 180 50% 20%;
+
+        --muted: 180 15% 92%;
+        --muted-foreground: 180 20% 40%;
+
+        --accent: 175 60% 45%;
+        --accent-foreground: 0 0% 100%;
+
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+
+        --border: 180 20% 88%;
+        --input: 180 20% 88%;
+        --ring: 175 70% 40%;
+
+        /* Radius */
+        --radius: 0.75rem;
+
+        color-scheme: light;
+    }
+
+    .dark {
+        --background: 180 30% 8%;
+        --foreground: 180 10% 95%;
+
+        --card: 180 25% 12%;
+        --card-foreground: 180 10% 95%;
+
+        --primary: 175 70% 50%;
+        --primary-foreground: 180 50% 10%;
+
+        --secondary: 180 20% 18%;
+        --secondary-foreground: 180 10% 90%;
+
+        --muted: 180 15% 20%;
+        --muted-foreground: 180 10% 60%;
+
+        --accent: 175 60% 55%;
+        --accent-foreground: 180 50% 10%;
+
+        --destructive: 0 70% 50%;
+        --destructive-foreground: 0 0% 100%;
+
+        --border: 180 20% 22%;
+        --input: 180 20% 22%;
+        --ring: 175 70% 50%;
+
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased;
+    }
+}
+
+@layer utilities {
+    /* Radius utilities */
+    .radius-sm {
+        border-radius: calc(var(--radius) - 4px);
+    }
+
+    .radius-md {
+        border-radius: calc(var(--radius) - 2px);
+    }
+
+    .radius-lg {
+        border-radius: var(--radius);
+    }
+
+    /* Glassmorphism */
+    .glass {
+        @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg;
+    }
+
+    .glass-dark {
+        @apply bg-[hsl(var(--card))/0.7] backdrop-blur-xl border border-[hsl(var(--border))] shadow-lg;
+    }
+
+    /* Gradients */
+    .gradient-primary {
+        @apply bg-linear-to-r from-teal-500 via-cyan-500 to-emerald-500;
+    }
+
+    .gradient-bg {
+        @apply bg-linear-to-br from-teal-50 via-cyan-50 to-emerald-50;
+    }
+
+    .text-gradient {
+        @apply bg-linear-to-r from-teal-600 via-cyan-600 to-emerald-600 bg-clip-text text-transparent;
+    }
+
+    /* Animations */
+    .animate-gradient {
+        animation: gradient-shift 8s ease infinite;
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+}
+
+/* Keyframes must be OUTSIDE @layer */
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
