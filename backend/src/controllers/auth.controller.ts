@@ -67,7 +67,6 @@ export const signup = async (req: Request, res: Response) => {
             
         });
         }
-        console.error(error);
         return res.status(500).json({
         message: "Internal server error "+error.message,
         });
@@ -124,8 +123,8 @@ export const login = async (req: Request, res: Response) => {
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 3600000,
-            secure: config.nodeEnv === 'production',
-            sameSite: 'strict'
+            secure: false,
+            sameSite: 'lax'
         })
 
         // update last login time before sending 200 status response
