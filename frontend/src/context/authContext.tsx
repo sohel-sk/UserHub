@@ -8,6 +8,8 @@ interface User {
     email: string;
     status: "ACTIVE" | "INACTIVE";
     role: "ADMIN" | "USER";
+    createdAt: string;
+    updatedAt: string;
 }
 
 
