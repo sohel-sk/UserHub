@@ -1,17 +1,18 @@
 
 import './App.css'
 import { useAuth } from './context/authContext'
-import { AuthProvider } from './context/authContext'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Login from './pages/login'
-import Signup from './pages/signup'
-import Profile from './pages/profile'
-import { AdminRoute } from './routes/AdminRoute'
+import { Navigate, Routes, Route } from 'react-router-dom'
+import ProfilePage from './pages/profile'
 import { ProtectedRoute } from './routes/ProtectedRoute'
 import AdminDashboard from './pages/adminDashboard'
+import { Navbar } from './components/navbar'
+import LoginPage from './pages/login'
+import SignupPage from './pages/signup'
+import DashboardPage from './pages/dashboard'
+
 
 function App() {
-  const { loading } = useAuth()
+  const { user, loading } = useAuth()
 
   if (loading) {
     return (
@@ -22,34 +23,38 @@ function App() {
   }
 
   return (
-    <AuthProvider>
-  <BrowserRouter>
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
+    <div className="min-h-screen gradient-bg">
+      {user && <Navbar />}
+      <Routes>
+        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
+        <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignupPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
               <AdminDashboard />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
-  </BrowserRouter>
-</AuthProvider>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
+      </Routes>
+    </div>
   )
 }
 
