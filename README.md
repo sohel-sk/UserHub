@@ -289,18 +289,7 @@ VITE_API_URL=https://your-backend.onrender.com
 
 ### 📬 Postman Collection
 
-👉 **Postman Collection Link:**
-`<Add your Postman collection URL here>`
-
-### 📘 Swagger / OpenAPI (Optional)
-
-If enabled:
-
-```
-/api-docs
-```
-
----
+👉 [**Postman Collection Link**](https://mapwhiz-team.postman.co/workspace/UserHub~17416f51-eaa1-433f-85a9-befca64eada0/collection/26832315-dadd8d1c-df56-4496-b93d-d62217140d60?action=share&creator=26832315&active-environment=26832315-250d3693-d394-4717-a4b9-f5a83ff5b444)
 
 ## 🔒 Security Highlights
 
