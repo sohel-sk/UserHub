@@ -1,8 +1,3 @@
-Perfect — below is a **clean, professional `README.md`** that **exactly matches** the documentation requirements you listed.
-You can **copy–paste this as-is** and just replace placeholders (URLs, names).
-
----
-
 # 📌 UserHub – Authentication & User Management System
 
 ## 🔍 Project Overview & Purpose
