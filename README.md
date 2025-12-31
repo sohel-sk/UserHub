@@ -38,8 +38,8 @@ This project is suitable for **assessments, interviews, and portfolio demonstrat
 
 ### DevOps / Deployment
 
-* **Render** – Backend hosting - https://user-hub-nu.vercel.app 
-* **Vercel** – Frontend hosting
+* **Render** – Backend hosting 
+* **Vercel** – Frontend hosting -  https://user-hub-nu.vercel.app 
 * **Postman** – API testing
 * **Swagger / OpenAPI (optional)**
 
